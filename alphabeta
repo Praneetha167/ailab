@@ -1,0 +1,78 @@
+def alphabeta(depth, node, maximizing, values, alpha, beta):
+    # Base case: leaf node
+    if depth == 2:
+        return values[node]
+
+    if maximizing:
+        best = -999
+        for i in range(2):
+            val = alphabeta(depth + 1, node * 2 + i, False, values, alpha, beta)
+            best = max(best, val)
+            alpha = max(alpha, best)
+            if beta <= alpha:
+                break  # Beta cut-off
+        return best
+    else:
+        best = 999
+        for i in range(2):
+            val = alphabeta(depth + 1, node * 2 + i, True, values, alpha, beta)
+            best = min(best, val)
+            beta = min(beta, best)
+            if beta <= alpha:
+                break  # Alpha cut-off
+        return best
+
+# Example leaf node values
+values = [3, 5, 6, 9]
+
+# Run alpha-beta pruning
+result = alphabeta(0, 0, True, values, -999, 999)
+print("Result:", result)
+
+
+------------------------------------------------------------------------------------------------------
+
+
+
+def alphabeta(depth, node, maximizing, values, alpha, beta, max_depth):
+    # Base case: leaf node
+    if depth == max_depth:
+        return values[node]
+
+    if maximizing:
+        best = -float('inf')
+        for i in range(2):
+            val = alphabeta(depth + 1, node * 2 + i, False, values, alpha, beta, max_depth)
+            best = max(best, val)
+            alpha = max(alpha, best)
+            if beta <= alpha:
+                break  # Beta cut-off
+        return best
+    else:
+        best = float('inf')
+        for i in range(2):
+            val = alphabeta(depth + 1, node * 2 + i, True, values, alpha, beta, max_depth)
+            best = min(best, val)
+            beta = min(beta, best)
+            if beta <= alpha:
+                break  # Alpha cut-off
+        return best
+
+# -----------------------
+# User input
+# -----------------------
+num_leaves = int(input("Enter the number of leaf nodes (must be a power of 2): "))
+
+values = []
+print(f"Enter the values of the {num_leaves} leaf nodes:")
+for i in range(num_leaves):
+    val = int(input(f"Value of leaf node {i + 1}: "))
+    values.append(val)
+
+# Compute max depth based on number of leaf nodes
+import math
+max_depth = int(math.log2(num_leaves))
+
+# Run alpha-beta pruning
+result = alphabeta(0, 0, True, values, -float('inf'), float('inf'), max_depth)
+print("\nResult of Alpha-Beta Pruning:", result)
