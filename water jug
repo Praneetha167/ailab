@@ -1,0 +1,286 @@
+from collections import deque
+
+def water_jug(x, y, target):
+    visited = set()
+    q = deque([(0, 0)])
+
+    while q:
+        a, b = q.popleft()
+        if (a, b) in visited:
+            continue
+        visited.add((a, b))
+
+        print(a, b)  # Print the current state
+
+        if a == target or b == target:
+            print("Target reached!")
+            return
+
+        # Generate all possible next states
+        q.append((x, b))  # Fill jug1
+        q.append((a, y))  # Fill jug2
+        q.append((0, b))  # Empty jug1
+        q.append((a, 0))  # Empty jug2
+
+        # Pour jug1 -> jug2
+        transfer = min(a, y - b)
+        q.append((a - transfer, b + transfer))
+
+        # Pour jug2 -> jug1
+        transfer = min(b, x - a)
+        q.append((a + transfer, b - transfer))
+
+# Example usage
+water_jug(4, 3, 2) 
+
+
+
+
+----------------------------------------------------------------------------
+
+from collections import deque
+
+def water_jug(x, y, target):
+    visited = set()
+    q = deque([(0, 0)])
+
+    while q:
+        a, b = q.popleft()
+        if (a, b) in visited:
+            continue
+        visited.add((a, b))
+
+        print(f"Jug1: {a}, Jug2: {b}")  # Print the current state
+
+        if a == target or b == target:
+            print("Target reached!")
+            return
+
+        # Generate all possible next states
+        q.append((x, b))  # Fill jug1
+        q.append((a, y))  # Fill jug2
+        q.append((0, b))  # Empty jug1
+        q.append((a, 0))  # Empty jug2
+
+        # Pour jug1 -> jug2
+        transfer = min(a, y - b)
+        q.append((a - transfer, b + transfer))
+
+        # Pour jug2 -> jug1
+        transfer = min(b, x - a)
+        q.append((a + transfer, b - transfer))
+
+# -----------------------
+# User Input
+# -----------------------
+if __name__ == "__main__":
+    jug1 = int(input("Enter capacity of Jug 1: "))
+    jug2 = int(input("Enter capacity of Jug 2: "))
+    target = int(input("Enter the target amount of water: "))
+
+    water_jug(jug1, jug2, target)
+
+
+--------------------------------------------------------------------------------------------------------------
+
+from collections import deque
+
+# -----------------------
+# BFS solution
+# -----------------------
+def bfs_water_jug(m, n, d):
+    visited = set()
+    queue = deque()
+    parent = {}  # To reconstruct the path
+
+    start = (0, 0)
+    queue.append(start)
+    visited.add(start)
+    parent[start] = None
+
+    while queue:
+        x, y = queue.popleft()
+        
+        if x == d or y == d:
+            # Reconstruct path
+            path = []
+            current = (x, y)
+            while current is not None:
+                path.append(current)
+                current = parent[current]
+            return path[::-1]  # Start -> goal
+        
+        # Generate all possible next states
+        states = [
+            (m, y),        # Fill jug1
+            (x, n),        # Fill jug2
+            (0, y),        # Empty jug1
+            (x, 0),        # Empty jug2
+            (x - min(x, n - y), y + min(x, n - y)),  # Pour jug1 -> jug2
+            (x + min(y, m - x), y - min(y, m - x))   # Pour jug2 -> jug1
+        ]
+        
+        for state in states:
+            if state not in visited:
+                visited.add(state)
+                queue.append(state)
+                parent[state] = (x, y)
+    
+    return None  # No solution
+
+# -----------------------
+# DFS solution
+# -----------------------
+def dfs_water_jug(m, n, d):
+    visited = set()
+    path = []
+
+    def dfs(x, y):
+        if (x, y) in visited:
+            return False
+        visited.add((x, y))
+        path.append((x, y))
+
+        if x == d or y == d:
+            return True
+        
+        # Generate all possible next states
+        states = [
+            (m, y), (x, n), (0, y), (x, 0),
+            (x - min(x, n - y), y + min(x, n - y)),  # Pour jug1 -> jug2
+            (x + min(y, m - x), y - min(y, m - x))   # Pour jug2 -> jug1
+        ]
+        
+        for state in states:
+            if dfs(*state):
+                return True
+        
+        path.pop()
+        return False
+
+    if dfs(0, 0):
+        return path
+    else:
+        return None
+
+# -----------------------
+# Example usage
+# -----------------------
+if __name__ == "__main__":
+    jug1 = 4
+    jug2 = 3
+    target = 2
+
+    print("BFS solution:")
+    bfs_path = bfs_water_jug(jug1, jug2, target)
+    print(bfs_path)
+
+    print("\nDFS solution:")
+    dfs_path = dfs_water_jug(jug1, jug2, target)
+    print(dfs_path)
+
+
+
+----------------------------------------------------------------------------------------
+from collections import deque
+
+# -----------------------
+# BFS solution
+# -----------------------
+def bfs_water_jug(m, n, d):
+    visited = set()
+    queue = deque()
+    parent = {}  # To reconstruct the path
+
+    start = (0, 0)
+    queue.append(start)
+    visited.add(start)
+    parent[start] = None
+
+    while queue:
+        x, y = queue.popleft()
+        
+        if x == d or y == d:
+            # Reconstruct path
+            path = []
+            current = (x, y)
+            while current is not None:
+                path.append(current)
+                current = parent[current]
+            return path[::-1]  # Start -> goal
+        
+        # Generate all possible next states
+        states = [
+            (m, y),        # Fill jug1
+            (x, n),        # Fill jug2
+            (0, y),        # Empty jug1
+            (x, 0),        # Empty jug2
+            (x - min(x, n - y), y + min(x, n - y)),  # Pour jug1 -> jug2
+            (x + min(y, m - x), y - min(y, m - x))   # Pour jug2 -> jug1
+        ]
+        
+        for state in states:
+            if state not in visited:
+                visited.add(state)
+                queue.append(state)
+                parent[state] = (x, y)
+    
+    return None  # No solution
+
+# -----------------------
+# DFS solution
+# -----------------------
+def dfs_water_jug(m, n, d):
+    visited = set()
+    path = []
+
+    def dfs(x, y):
+        if (x, y) in visited:
+            return False
+        visited.add((x, y))
+        path.append((x, y))
+
+        if x == d or y == d:
+            return True
+        
+        # Generate all possible next states
+        states = [
+            (m, y), (x, n), (0, y), (x, 0),
+            (x - min(x, n - y), y + min(x, n - y)),  # Pour jug1 -> jug2
+            (x + min(y, m - x), y - min(y, m - x))   # Pour jug2 -> jug1
+        ]
+        
+        for state in states:
+            if dfs(*state):
+                return True
+        
+        path.pop()
+        return False
+
+    if dfs(0, 0):
+        return path
+    else:
+        return None
+
+# -----------------------
+# User Input & Execution
+# -----------------------
+if __name__ == "__main__":
+    # Ask the user for jug capacities and target
+    jug1 = int(input("Enter capacity of Jug 1: "))
+    jug2 = int(input("Enter capacity of Jug 2: "))
+    target = int(input("Enter the target amount of water: "))
+
+    print("\nBFS solution (shortest path):")
+    bfs_path = bfs_water_jug(jug1, jug2, target)
+    if bfs_path:
+        print(bfs_path)
+    else:
+        print("No solution possible with given jugs.")
+
+    print("\nDFS solution (any path):")
+    dfs_path = dfs_water_jug(jug1, jug2, target)
+    if dfs_path:
+        print(dfs_path)
+    else:
+        print("No solution possible with given jugs.")
