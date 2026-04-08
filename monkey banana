@@ -1,0 +1,38 @@
+def monkey():
+    pos = "door"
+    box = "window"
+    banana = "middle"
+
+    if pos != box:
+        print("Monkey moves to box")
+        pos = box
+
+    print("Monkey pushes box to middle")
+    pos = banana
+    print("Monkey climbs box")
+    print("Monkey takes banana")
+
+# Call the function
+monkey()
+
+--------------------------------------------------------------------
+
+def monkey():
+    # User input with position hints
+    pos = input("Enter monkey's starting position (e.g., door, window, middle, corner): ")
+    box = input("Enter box's starting position (e.g., door, window, middle, corner): ")
+    banana = input("Enter banana's position (e.g., door, window, middle, corner): ")
+
+    print("\nMonkey's actions:")
+
+    if pos != box:
+        print(f"Monkey moves from {pos} to {box}")
+        pos = box
+
+    print(f"Monkey pushes box to {banana}")
+    pos = banana
+    print("Monkey climbs box")
+    print("Monkey takes banana")
+
+# Call the function
+monkey()
