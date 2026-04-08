@@ -1,0 +1,35 @@
+def hanoi(n, source, dest, aux):
+    if n == 1:
+        print(source, "->", dest)
+        return
+    hanoi(n - 1, source, aux, dest)
+    print(source, "->", dest)
+    hanoi(n - 1, aux, dest, source)
+
+# Example usage: move 3 disks from A to C using B as auxiliary
+hanoi(3, 'A', 'C', 'B')
+
+
+-------------------------------------------------------------------------------------------
+
+def hanoi(n, source, dest, aux):
+    if n == 1:
+        print(f"Move disk 1 from {source} -> {dest}")
+        return
+    hanoi(n - 1, source, aux, dest)
+    print(f"Move disk {n} from {source} -> {dest}")
+    hanoi(n - 1, aux, dest, source)
+
+# -----------------------
+# User Input
+# -----------------------
+if __name__ == "__main__":
+    num_disks = int(input("Enter the number of disks: "))
+    source_rod = input("Enter the name of the source rod: ")
+    dest_rod = input("Enter the name of the destination rod: ")
+    aux_rod = input("Enter the name of the auxiliary rod: ")
+
+    print(f"\nSolution for {num_disks} disks:")
+    hanoi(num_disks, source_rod, dest_rod, aux_rod)
+
+-----------------------------------------------------------------------------------------
