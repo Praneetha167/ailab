@@ -100,3 +100,79 @@ if solution:
         print(step)
 else:
     print("No solution found")
+
+
+---------------------------------------------------------------------------
+from collections import deque
+
+# State: (monkey_pos, box_pos, on_box, has_banana)
+initial_state = ('A', 'B', False, False)
+
+# Goal: monkey has banana
+def is_goal(state):
+    return state[3] == True
+
+
+def get_next_states(state):
+    monkey_pos, box_pos, on_box, has_banana = state
+    next_states = []
+
+    positions = ['A', 'B', 'C']
+
+    # 1. Walk (monkey moves alone)
+    if not on_box:
+        for pos in positions:
+            if pos != monkey_pos:
+                next_states.append((pos, box_pos, False, has_banana))
+
+    # 2. Push box (monkey and box move together)
+    if monkey_pos == box_pos and not on_box:
+        for pos in positions:
+            if pos != monkey_pos:
+                next_states.append((pos, pos, False, has_banana))
+
+    # 3. Climb box
+    if monkey_pos == box_pos and not on_box:
+        next_states.append((monkey_pos, box_pos, True, has_banana))
+
+    # 4. Grasp banana
+    if monkey_pos == 'C' and box_pos == 'C' and on_box:
+        next_states.append((monkey_pos, box_pos, True, True))
+
+    return next_states
+
+
+def bfs():
+    queue = deque()
+    queue.append((initial_state, []))
+    visited = set()
+
+    while queue:
+        current_state, path = queue.popleft()
+
+        if current_state in visited:
+            continue
+
+        visited.add(current_state)
+
+        # Check goal
+        if is_goal(current_state):
+            return path + [current_state]
+
+        # Explore next states
+        for next_state in get_next_states(current_state):
+            queue.append((next_state, path + [current_state]))
+
+    return None
+
+
+# Run solution
+solution = bfs()
+
+# Print result
+if solution:
+    print("Solution found:\n")
+    for step in solution:
+        print(step)
+else:
+    print("No solution found")
