@@ -60,3 +60,54 @@ for perm in permutations(cities[1:]):  # Fix city 0 as starting point
     min_path = min(min_path, cost)
 
 print("Minimum cost of visiting all cities:", min_path)
+
+
+
+------------------------------------------------------------------------------------------
+
+from itertools import combinations
+
+# Graph (same as yours)
+graph = [
+    [0, 10, 15, 20],
+    [10, 0, 35, 25],
+    [15, 35, 0, 30],
+    [20, 25, 30, 0]
+]
+
+n = len(graph)
+
+# dp[(mask, i)] = minimum cost to reach city i with visited set "mask"
+dp = {}
+
+# Base case: start from city 0
+for i in range(1, n):
+    dp[(1 << i, i)] = graph[0][i]
+
+# Build DP table
+for r in range(2, n):
+    for subset in combinations(range(1, n), r):
+        mask = 0
+        for bit in subset:
+            mask |= (1 << bit)
+
+        for j in subset:
+            prev_mask = mask ^ (1 << j)
+            min_cost = float('inf')
+
+            for k in subset:
+                if k != j:
+                    cost = dp[(prev_mask, k)] + graph[k][j]
+                    min_cost = min(min_cost, cost)
+
+            dp[(mask, j)] = min_cost
+
+# Final step: return to city 0
+full_mask = (1 << n) - 2  # exclude city 0
+min_path = float('inf')
+
+for i in range(1, n):
+    cost = dp[(full_mask, i)] + graph[i][0]
+    min_path = min(min_path, cost)
+
+print("Minimum cost:", min_path)
