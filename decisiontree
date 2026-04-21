@@ -1,0 +1,168 @@
+# Decision Tree Classifier Example
+import matplotlib.pyplot as plt
+from sklearn.tree import plot_tree
+
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+# Sample dataset (features + labels)
+# Example: Predict whether a student passes (1) or fails (0)
+# based on [hours_studied, attendance_percentage]
+X = [
+[2, 50],
+[4, 60],
+[6, 70],
+[8, 80],
+[10, 90],
+[1, 40],
+[3, 55],
+[7, 75]
+]
+y = [0, 0, 1, 1, 1, 0, 0, 1] # Labels
+# Split dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(
+X, y, test_size=0.25, random_state=42
+)
+# Create Decision Tree model
+model = DecisionTreeClassifier()
+# Train the model
+model.fit(X_train, y_train)
+# Make predictions
+y_pred = model.predict(X_test)
+# Evaluate accuracy
+accuracy = accuracy_score(y_test, y_pred)
+print("Predicted values:", y_pred)
+print("Actual values:", y_test)
+print("Accuracy:", accuracy)
+
+plt.figure(figsize=(12, 8))
+plot_tree(
+    model,
+    feature_names=["Hours Studied", "Attendance %"],
+    class_names=["Fail", "Pass"],
+    filled=True
+)
+plt.show()
+---------------------------------------------------------------------
+
+  import matplotlib.pyplot as plt
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# -----------------------------
+# USER INPUT PART
+# -----------------------------
+
+X = []
+y = []
+
+n = int(input("Enter number of data points: "))
+
+print("\nEnter Hours Studied and Attendance Percentage:")
+for i in range(n):
+    hours = float(input(f"Hours studied for student {i+1}: "))
+    attendance = float(input(f"Attendance % for student {i+1}: "))
+    X.append([hours, attendance])
+
+print("\nEnter label for each student (1 = Pass, 0 = Fail):")
+for i in range(n):
+    label = int(input(f"Result for student {i+1}: "))
+    y.append(label)
+
+# -----------------------------
+# TRAIN–TEST SPLIT
+# -----------------------------
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42
+)
+
+# -----------------------------
+# DECISION TREE MODEL
+# -----------------------------
+
+model = DecisionTreeClassifier()
+model.fit(X_train, y_train)
+
+# -----------------------------
+# PREDICTION & ACCURACY
+# -----------------------------
+
+y_pred = model.predict(X_test)
+
+accuracy = accuracy_score(y_test, y_pred)
+
+print("\nPredicted values:", y_pred)
+print("Actual values:", y_test)
+print("Accuracy:", accuracy)
+
+# -----------------------------
+# VISUALIZE DECISION TREE
+# -----------------------------
+
+plt.figure(figsize=(12, 8))
+plot_tree(
+    model,
+    feature_names=["Hours Studied", "Attendance %"],
+    class_names=["Fail", "Pass"],
+    filled=True
+)
+plt.show()
+--------------------------------------------------------------------
+# Import required libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Read the local Kaggle dataset (CSV file must be in the same folder)
+# Example filename: student_data.csv
+df = pd.read_csv("student_data.csv")
+
+# Display first few rows
+print(df.head())
+
+# Display column names
+print(df.columns)
+
+# Select features and target
+# Replace column names if your dataset uses different names
+X = df[["Hours_Studied", "Attendance"]].values
+y = df["Result"].values   # 0 = Fail, 1 = Pass
+
+# Split dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42
+)
+
+# Create Decision Tree model
+model = DecisionTreeClassifier()
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Make predictions
+y_pred = model.predict(X_test)
+
+# Evaluate accuracy
+accuracy = accuracy_score(y_test, y_pred)
+
+print("Predicted values:", y_pred)
+print("Actual values:", y_test)
+print("Accuracy:", accuracy)
+
+# Visualize the Decision Tree
+plt.figure(figsize=(12, 8))
+plot_tree(
+    model,
+    feature_names=["Hours Studied", "Attendance"],
+    class_names=["Fail", "Pass"],
+    filled=True
+)
+plt.show()
+
+  
