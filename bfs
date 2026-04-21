@@ -1,0 +1,87 @@
+from collections import deque
+
+# Function to perform BFS
+def bfs(graph, start_node):
+    visited = set()                  # To keep track of visited nodes
+    queue = deque([start_node])      # Queue for BFS
+    traversal_order = []             # List to store traversal result
+
+    while queue:
+        node = queue.popleft()
+
+        if node not in visited:
+            visited.add(node)
+            traversal_order.append(node)
+
+            # Add all unvisited neighbors to the queue
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    queue.append(neighbor)
+
+    return traversal_order
+
+
+# Example graph represented as an adjacency list
+graph = {
+    'A': ['B', 'C'],
+    'B': ['D', 'E'],
+    'C': ['F'],
+    'D': [],
+    'E': ['F'],
+    'F': []
+}
+
+# Perform BFS starting from node 'A'
+result = bfs(graph, 'A')
+print("Breadth-First Traversal:", result)
+
+-------------------------------------------------------------------------
+
+from collections import deque
+
+# Function to perform BFS
+def bfs(graph, start_node):
+    visited = set()
+    queue = deque([start_node])
+    traversal_order = []
+
+    while queue:
+        node = queue.popleft()
+
+        if node not in visited:
+            visited.add(node)
+            traversal_order.append(node)
+
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    queue.append(neighbor)
+
+    return traversal_order
+
+
+# -----------------------------
+# USER INPUT PART
+# -----------------------------
+
+graph = {}
+
+# Number of nodes
+n = int(input("Enter number of nodes: "))
+
+print("Enter node and its neighbors (space separated):")
+print("Example: A B C")
+
+for _ in range(n):
+    data = input().split()
+    node = data[0]
+    neighbors = data[1:]
+    graph[node] = neighbors
+
+# Start node input
+start_node = input("Enter starting node: ")
+
+# Perform BFS
+result = bfs(graph, start_node)
+
+print("Breadth-First Traversal:", result)
+
