@@ -1,0 +1,27 @@
+import numpy as np
+import matplotlib.pyplot as plt
+# Sample Data (X and Y values)
+X = np.array([1, 2, 3, 4, 5])
+Y = np.array([2, 4, 5, 4, 5])
+# Step 1: Calculate the means
+mean_x = np.mean(X)
+mean_y = np.mean(Y)
+# Step 2: Calculate slope (m)
+numerator = np.sum((X - mean_x) * (Y - mean_y))
+denominator = np.sum((X - mean_x) ** 2)
+m = numerator / denominator
+# Step 3: Calculate intercept (c)
+c = mean_y - m * mean_x
+# Step 4: Generate regression line
+x_line = np.linspace(min(X), max(X), 100)
+y_line = m * x_line + c
+# Step 5: Plot graph
+plt.figure(figsize=(6,4))
+plt.scatter(X, Y, label=&quot;Data Points&quot;)
+plt.plot(x_line, y_line, label=&quot;Best Fit Line&quot;)
+plt.xlabel(&quot;X Values&quot;)
+plt.ylabel(&quot;Y Values&quot;)
+plt.title(&quot;Linear Regression Graph&quot;)
+plt.legend()
+plt.grid(True)
+plt.show()
