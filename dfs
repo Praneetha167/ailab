@@ -1,0 +1,75 @@
+# Function to perform DFS
+def dfs(graph, start_node, visited=None, traversal_order=None):
+    if visited is None:
+        visited = set()                  # To keep track of visited nodes
+    if traversal_order is None:
+        traversal_order = []             # List to store traversal result
+
+    visited.add(start_node)
+    traversal_order.append(start_node)
+
+    # Visit all unvisited neighbors
+    for neighbor in graph[start_node]:
+        if neighbor not in visited:
+            dfs(graph, neighbor, visited, traversal_order)
+
+    return traversal_order
+
+
+# Example graph represented as an adjacency list
+graph = {
+    'A': ['B', 'C'],
+    'B': ['D', 'E'],
+    'C': ['F'],
+    'D': [],
+    'E': ['F'],
+    'F': []
+}
+
+# Perform DFS starting from node 'A'
+result = dfs(graph, 'A')
+print("Depth-First Traversal:", result)
+---------------------------------------------------------------------
+
+  # Function to perform DFS
+def dfs(graph, start_node, visited=None, traversal_order=None):
+    if visited is None:
+        visited = set()
+    if traversal_order is None:
+        traversal_order = []
+
+    visited.add(start_node)
+    traversal_order.append(start_node)
+
+    for neighbor in graph[start_node]:
+        if neighbor not in visited:
+            dfs(graph, neighbor, visited, traversal_order)
+
+    return traversal_order
+
+
+# -----------------------------
+# USER INPUT PART
+# -----------------------------
+
+graph = {}
+
+# Number of nodes
+n = int(input("Enter number of nodes: "))
+
+print("Enter node and its neighbors (space separated):")
+print("Example: A B C")
+
+for _ in range(n):
+    data = input().split()
+    node = data[0]
+    neighbors = data[1:]
+    graph[node] = neighbors
+
+# Start node input
+start_node = input("Enter starting node: ")
+
+# Perform DFS
+result = dfs(graph, start_node)
+
+print("Depth-First Traversal:", result)
