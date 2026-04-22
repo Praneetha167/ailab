@@ -63,3 +63,52 @@ board = [-1] * N
 
 # Solve the N-Queens problem
 solve(board, 0, N)
+
+-------------------------------------------------------------------
+def safe(board, row, col):
+    for i in range(row):
+        if board[i] == col or abs(board[i] - col) == abs(i - row):
+            return False
+    return True
+
+def print_board(board, N):
+    print("\nChessboard Representation:\n")
+    for i in range(N):
+        for j in range(N):
+            if board[i] == j:
+                print("Q", end=" ")
+            else:
+                print(".", end=" ")
+        print()
+    print()
+
+def solve(board, row, N):
+    if row == N:
+        print("One possible solution:", board)
+        print_board(board, N)   # 🔥 Added this
+        return True
+
+    for col in range(N):
+        if safe(board, row, col):
+            board[row] = col
+            if solve(board, row + 1, N):
+                return True
+
+    return False
+
+# -----------------------
+# User input
+# -----------------------
+while True:
+    try:
+        N = int(input("Enter the number of queens (N): "))
+        if N <= 0:
+            print("Number of queens must be a positive integer.")
+            continue
+        break
+    except ValueError:
+        print("Invalid input. Please enter an integer.")
+
+board = [-1] * N
+
+solve(board, 0, N)
